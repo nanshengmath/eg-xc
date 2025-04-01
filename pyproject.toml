@@ -6,7 +6,7 @@ authors = [
 ]
 requires-python = ">= 3.11"
 dependencies = [
-    # General science & ml
+    # General science & ML
     "numpy>=2.1.0",
     "scipy>=1.14.1",
     "scikit-learn>=1.5.1",
@@ -30,11 +30,20 @@ dependencies = [
     "pytest>=8.3.2",
     "e3nn-jax>=0.20.7",
     "flax>=0.10.1",
-    "jax>=0.4.35",
     "periodictable>=1.7.1",
     "pyscf>=2.7.0",
     "jaxtyping>=0.2.36",
+    "basis-set-exchange>=0.10",
+    "plotly>=5.24.1",
+    "pytest-xdist>=3.6.1",
+    "openqdc>=0.1.2",
+    "grain>=0.2.3",
+    "wandb>=0.19.7",
+    # Conditional JAX dependency
+    "jax[cuda12]>=0.5.0; sys_platform == 'linux'",
+    "jax>=0.5.0; sys_platform != 'linux'",
 ]
+
 license = { text = "MIT" }
 
 [build-system]

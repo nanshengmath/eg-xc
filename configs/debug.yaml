@@ -1,0 +1,36 @@
+seml:
+  executable: scripts/main.py
+  output_dir: ./output_log/slurm/debug
+  project_root_dir: ../
+
+slurm:
+  # it needs more than 40GB
+  - experiments_per_job: 1
+    sbatch_options:
+      gres: gpu:1 # num GPUs
+      mem: 32G # memory
+      cpus-per-task: 10 # num cores
+      time: 0-02:00 # max time, D-HH:MM
+      partition: gpu_a100
+      qos: interactive # default # interactive
+
+fixed:
+  logging.name: 'debugging'
+  data.data_set_kwargs.data_dir: '/ceph/hdd/students/eberhare/egxc/'
+
+  base.epochs: 3
+  basis.name: 'sto-3g'
+  model.local: 'scan'
+
+  +dataset.name: 'md17'
+  data.data_set_kwargs.name: 'ethanol'
+  data.preload.include_grid: false
+  data.workers: 8  # atomatically determined by backend
+  +solver.name: 'scf'
+  +functional.name: 'egxc'
+
+grid:
+  optimizer.kwargs.schedule.base_rate:
+    type: choice
+    options:
+      - 1.e-5

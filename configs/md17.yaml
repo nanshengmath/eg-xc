@@ -1,0 +1,47 @@
+seml:
+  executable: scripts/main.py
+  output_dir: ./output_log/slurm/debug
+  project_root_dir: ../
+
+slurm:
+  # it needs more than 40GB
+  - experiments_per_job: 1
+    sbatch_options:
+      gres: gpu:1 # num GPUs
+      mem: 16G # memory
+      cpus-per-task: 4 # num cores
+      time: 0-02:00 # max time, D-HH:MM
+      partition: gpu_a100  # does not fit on 1080Ti
+      qos: default # default # interactive
+
+fixed:
+  logging.name: 'learning_rate_ablation'
+  data.data_set_kwargs.data_dir: '/ceph/hdd/students/eberhare/egxc/'
+
+  base.epochs:  5
+  basis.name: '6-31g'
+  model.local: 'scan'
+
+  +dataset.name: 'md17'
+  +solver.name: 'scf'
+  +functional.name: 'egxc'
+
+grid:
+  optimizer.kwargs.schedule.base_rate:
+    type: choice
+    options:
+      # - 1.e-2
+      # - 1.e-3
+      - 1.e-4
+      - 1.e-5
+      - 1.e-6
+
+  data.data_set_kwargs.name:
+    type: choice
+    options:
+      # - 'aspirin'
+      # - 'benzene'
+      - 'ethanol'
+      # - 'malonaldehyde'
+      # - 'toluene'
+

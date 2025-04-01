@@ -1,0 +1,52 @@
+seml:
+  executable: scripts/main.py
+  output_dir: ./output_log/slurm/debug
+  project_root_dir: ../
+
+slurm:
+  - experiments_per_job: 1
+    sbatch_options:
+      gres: gpu:1 # num GPUs
+      mem: 16G # memory
+      cpus-per-task: 12 # num cores
+      time: 0-02:00 # max time, D-HH:MM
+      partition: gpu_a100
+      qos: default # default # interactive
+
+fixed:
+  logging.name: 'ethanol_mgga_only'
+  data.data_set_kwargs.data_dir: '/ceph/hdd/students/eberhare/egxc/'
+
+  base.epochs:  10
+  basis.name: '6-31g'
+  model.graph: null
+
+  +dataset.name: 'md17'
+  +solver.name: 'scf'
+
+
+grid:
+  model.local:
+    type: choice
+    options:
+      - 'dick2021'
+      # - 'nagai2020'
+
+  optimizer.kwargs.schedule.base_rate:
+    type: choice
+    options:
+      - 1.e2
+      - 5.e1
+      - 1.e1
+      - 1
+      # - 1.e-1
+
+  data.data_set_kwargs.name:
+    type: choice
+    options:
+      # - 'aspirin'
+      # - 'benzene'
+      - 'ethanol'
+      # - 'malonaldehyde'
+      # - 'toluene'
+
