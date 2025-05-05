@@ -47,6 +47,7 @@ presplit_datasets: Dict[str, dataloading.PresplitDataset] = {}
 partially_split_datasets: Dict[str, dataloading.PartiallySplitDataset] = {
     'md17': dataloading.MD17(ROOT_DATA_DIR, 'ethanol'),
     'qm9': dataloading.QM9(ROOT_DATA_DIR, 7),
+    '3bpa': dataloading.ThreeBPA(ROOT_DATA_DIR),
 }
 
 unsplit_datasets: Dict[str, dataloading.UnsplitDataset] = {
@@ -129,7 +130,7 @@ def test_qm9():
 
 
 def test_qm9_exclude_fluorine():
-    dataset = dataloading.QM9(path.join(ROOT_DATA_DIR, 'qm9'), 7, exclude_fluorine=True)
+    dataset = dataloading.QM9(ROOT_DATA_DIR, 7, exclude_fluorine=True)
     assert len(dataset) == 128908
     print(len(dataset))
 
@@ -139,6 +140,24 @@ def test_qm9_exclude_fluorine():
     len_val = int(0.1 * len_dev)
     assert len(val) == len_val
     assert len(train) == len_dev - len_val
+
+
+def test_3bpa():
+    dataset = partially_split_datasets['3bpa']  # type: ignore
+    assert len(dataset) == 13993
+
+    sample, targets = dataset[1000]
+    assert jnp.isclose(targets.energy, -17660.06855946407)  # type: ignore
+
+    train, val, test = dataset.random_split(
+        0.1,
+        seed=42,
+        train_subsplits=['train_300K'],  # type: ignore
+        test_subsplits=['test_300K', 'test_dih_beta120'],  # type: ignore
+    )
+    assert len(train) == 450
+    assert len(val) == 50
+    assert len(test) == 4016
 
 
 transformations = {

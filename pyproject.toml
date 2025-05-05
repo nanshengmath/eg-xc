@@ -42,6 +42,7 @@ dependencies = [
     # Conditional JAX dependency
     "jax[cuda12]>=0.5.0; sys_platform == 'linux'",
     "jax>=0.5.0; sys_platform != 'linux'",
+    "ase>=3.24.0",
 ]
 
 license = { text = "MIT" }

@@ -865,6 +865,7 @@ name = "egxc"
 version = "0.0.1"
 source = { editable = "." }
 dependencies = [
+    { name = "ase" },
     { name = "basis-set-exchange" },
     { name = "e3nn-jax" },
     { name = "einops" },
@@ -899,6 +900,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "ase", specifier = ">=3.24.0" },
     { name = "basis-set-exchange", specifier = ">=0.10" },
     { name = "e3nn-jax", specifier = ">=0.20.7" },
     { name = "einops", specifier = ">=0.8.0" },

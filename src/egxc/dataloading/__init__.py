@@ -11,6 +11,7 @@ from .base import (
 from .oqdc_sets import DES370K
 from .md17 import MD17
 from .qm9 import QM9
+from .threebpa import ThreeBPA
 
 from .transform import get_preload_transform, get_jax_transform, ToJaxTransform
 from .dataloader import (
