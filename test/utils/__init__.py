@@ -5,7 +5,10 @@ from .pyscf_wrapper import PyscfSystemWrapper
 from .errors import relative_error, is_close, assert_is_close
 
 
-ROOT_DATA_DIR = '/ceph/hdd/students/eberhare/egxc/'
+import os
+
+ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+ROOT_DATA_DIR = os.path.join(ROOT_DIR, 'data')
 
 
 def set_jax_testing_config():

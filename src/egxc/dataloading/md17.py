@@ -106,6 +106,12 @@ class MD17(PartiallySplitDataset):
                 )
 
     def download(self) -> None:
+        train_file = self.file_names[self.name].replace('.zip', '-train.npz')
+        test_file = self.file_names[self.name].replace('.zip', '-test.npz')
+        if os.path.exists(os.path.join(self.raw_dir, train_file)) and \
+           os.path.exists(os.path.join(self.raw_dir, test_file)):
+            return
+
         url = f'http://quantum-machine.org/gdml/data/npz/{self.file_names[self.name]}'
         path = download_url(url, self.raw_dir)
         extract_zip(path, self.raw_dir)
