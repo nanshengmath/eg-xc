@@ -11,7 +11,6 @@ from typing import List, Tuple
 
 class ThreeBPA(PartiallySplitDataset):
     raw_url = 'https://pubs.acs.org/doi/suppl/10.1021/acs.jctc.1c00647/suppl_file/ct1c00647_si_002.zip'
-    raw_subdir = 'dataset_3BPA'
     train_subsplit_labels = ['train_300K', 'train_mixedT']
     test_subsplit_labels = ['test_300K', 'test_600K', 'test_1200K', 'test_dih_beta120', 'test_dih_beta150', 'test_dih_beta180']
     total_subsplit_labels = train_subsplit_labels + test_subsplit_labels
@@ -50,6 +49,8 @@ class ThreeBPA(PartiallySplitDataset):
         return self.subsplit_lens.sum()
 
     def download(self) -> None:
+        if os.path.exists(os.path.join(self.raw_dir, 'train_300K.xyz')):
+            return
         file_path = download_url(self.raw_url, self.raw_dir)
         extract_zip(file_path, self.raw_dir)
         os.unlink(file_path)
@@ -59,7 +60,7 @@ class ThreeBPA(PartiallySplitDataset):
         for subsplit_label in tqdm(self.total_subsplit_labels, desc='processing configurations'):
             out_dir = os.path.join(self.processed_dir, subsplit_label)
             os.makedirs(out_dir, exist_ok=False)
-            confs = read(os.path.join(self.raw_dir, self.raw_subdir, subsplit_label + '.xyz'), index=':')
+            confs = read(os.path.join(self.raw_dir, subsplit_label + '.xyz'), index=':')
             subsplit_lens.append(len(confs))
             for i, molecule in enumerate(confs):
                 np.savez_compressed(
