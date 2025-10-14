@@ -55,3 +55,8 @@ build-backend = "hatchling.build"
 quote-style = "single"
 line-ending = "lf"
 indent-style = "space"
+
+[tool.pytest.ini_options]
+testpaths = [
+    "test",
+]

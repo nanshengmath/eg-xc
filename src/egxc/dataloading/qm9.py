@@ -57,6 +57,9 @@ class QM9(PartiallySplitDataset):
         return len(os.listdir(os.path.join(self.processed_dir, 'samples')))
 
     def download(self) -> None:
+        if all([os.path.exists(os.path.join(self.raw_dir, f)) for f in self.raw_file_names]):
+            return
+
         file_path = download_url(self.raw_url1, self.raw_dir)
         extract_zip(file_path, self.raw_dir)
         os.unlink(file_path)
